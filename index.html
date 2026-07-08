@@ -14,7 +14,7 @@
   --ink-soft:#4B5563;
   --grid:#8A94A0;
   --line:#E4E7EB;
-  --red:#C8102E;
+  --red:#E2001A;
   --red-soft:#FBEAED;
   --green:#2E7D4F;
   --green-soft:#E7F3EC;
@@ -30,13 +30,13 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
 
 /* ── Topbar (Workbook-Leiste) ─────────────────────── */
-.topbar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.topbar{background:var(--red);border-bottom:none;position:sticky;top:0;z-index:50}
 .topbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:16px}
-.crumb{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--grid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.crumb b{color:var(--ink);font-weight:600}
-.crumb .sep{margin:0 6px;color:var(--line)}
-.live{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green);background:var(--green-soft);padding:4px 10px;border-radius:99px;white-space:nowrap}
-.live .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.crumb{font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb b{color:#fff;font-weight:600}
+.crumb .sep{margin:0 6px;color:rgba(255,255,255,.35)}
+.live{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;background:rgba(0,0,0,.22);padding:4px 10px;border-radius:99px;white-space:nowrap}
+.live .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
 /* ── Sheet-Tabs ───────────────────────────────────── */
@@ -113,7 +113,7 @@ section{margin-top:44px;scroll-margin-top:130px}
 .viz:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(20,24,29,.12)}
 .viz-thumb{height:150px;position:relative;display:flex;align-items:flex-end;padding:16px}
 .viz-thumb.superstore{background:linear-gradient(135deg,#3C4658 0%,#1E2530 100%)}
-.viz-thumb.warming{background:linear-gradient(135deg,#C8102E 0%,#7A0A1C 100%)}
+.viz-thumb.warming{background:linear-gradient(135deg,#E2001A 0%,#8F0011 100%)}
 .viz-thumb svg{position:absolute;inset:auto 16px 14px auto;right:16px}
 .viz-kind{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.75);background:rgba(255,255,255,.14);padding:4px 9px;border-radius:99px;backdrop-filter:blur(2px)}
 .viz-body{padding:18px 20px 20px}
@@ -126,12 +126,12 @@ section{margin-top:44px;scroll-margin-top:130px}
 .folio-note a:hover{text-decoration:underline}
 
 /* ── Footer / Kontakt ─────────────────────────────── */
-.foot{margin-top:56px;background:var(--ink);border-radius:var(--radius);color:#fff;padding:30px 32px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
-.foot .cta{font-family:'Archivo',sans-serif;font-weight:700;font-size:19px}
-.foot .sub{font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.55);margin-top:5px}
+.foot{margin-top:56px;background:var(--red);border-radius:var(--radius);color:#fff;padding:30px 32px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.foot .cta{font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:.01em}
+.foot .sub{font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.75);margin-top:5px}
 .foot .links{display:flex;gap:10px;flex-wrap:wrap}
-.foot .links a{font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:7px 14px;text-decoration:none;color:#fff;transition:background .15s,color .15s}
-.foot .links a:hover{background:#fff;color:var(--ink)}
+.foot .links a{font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid rgba(255,255,255,.45);border-radius:99px;padding:7px 14px;text-decoration:none;color:#fff;transition:background .15s,color .15s}
+.foot .links a:hover{background:#fff;color:var(--red)}
 
 @media(max-width:860px){
   .kpis{grid-template-columns:1fr 1fr}
@@ -299,7 +299,7 @@ section{margin-top:44px;scroll-margin-top:130px}
             <rect x="40" y="28" width="14" height="32" rx="2" fill="rgba(255,255,255,.4)"/>
             <rect x="60" y="12" width="14" height="48" rx="2" fill="rgba(255,255,255,.65)"/>
             <rect x="80" y="18" width="14" height="42" rx="2" fill="rgba(255,255,255,.5)"/>
-            <rect x="100" y="4" width="14" height="56" rx="2" fill="#C8102E"/>
+            <rect x="100" y="4" width="14" height="56" rx="2" fill="#E2001A"/>
           </svg>
         </div>
         <div class="viz-body">
