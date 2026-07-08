@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denis Hille — Kandidaten-Dashboard | SC Freiburg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#F2F3F5;
+  --card:#FFFFFF;
+  --ink:#14181D;
+  --ink-soft:#4B5563;
+  --grid:#8A94A0;
+  --line:#E4E7EB;
+  --red:#C8102E;
+  --red-soft:#FBEAED;
+  --green:#2E7D4F;
+  --green-soft:#E7F3EC;
+  --navy:#3C4658;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(20,24,29,.05),0 4px 16px rgba(20,24,29,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{background:var(--canvas);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+
+/* ── Topbar (Workbook-Leiste) ─────────────────────── */
+.topbar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:16px}
+.crumb{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--grid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb b{color:var(--ink);font-weight:600}
+.crumb .sep{margin:0 6px;color:var(--line)}
+.live{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green);background:var(--green-soft);padding:4px 10px;border-radius:99px;white-space:nowrap}
+.live .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── Sheet-Tabs ───────────────────────────────────── */
+.tabs{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:56px;z-index:49}
+.tabs-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;gap:2px;overflow-x:auto}
+.tab{font-family:'Archivo',sans-serif;font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--grid);text-decoration:none;padding:13px 16px 11px;border-bottom:2.5px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab:hover{color:var(--ink)}
+.tab.active,.tab:target{color:var(--red);border-bottom-color:var(--red)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
+
+/* ── Dashboard-Header ─────────────────────────────── */
+.dash-head{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 32px;border-left:5px solid var(--red);display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between}
+.dash-head h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-.01em;line-height:1.05}
+.dash-head .sub{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--red);margin-top:6px}
+.dash-head .meta{font-size:13px;color:var(--ink-soft);margin-top:10px}
+.head-toggle{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;font-family:'IBM Plex Mono',monospace;font-size:12px}
+.head-toggle span{padding:7px 16px;color:var(--grid)}
+.head-toggle span.on{background:var(--ink);color:#fff}
+
+/* ── KPI-Band ─────────────────────────────────────── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+.kpi{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px 14px;position:relative;overflow:hidden}
+.kpi .label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grid)}
+.kpi .value{font-family:'Archivo',sans-serif;font-weight:800;font-size:34px;margin-top:6px;line-height:1}
+.kpi .delta{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;margin-top:9px;padding:3px 9px;border-radius:99px;background:var(--green-soft);color:var(--green)}
+.kpi .delta.neutral{background:var(--red-soft);color:var(--red)}
+.kpi svg{position:absolute;right:14px;bottom:12px;opacity:.9}
+.kpi .spark-line{fill:none;stroke:var(--navy);stroke-width:2;stroke-linecap:round}
+.kpi .spark-fill{fill:var(--navy);opacity:.08;stroke:none}
+
+/* ── Sections / Karten ────────────────────────────── */
+section{margin-top:44px;scroll-margin-top:130px}
+.sec-title{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+.sec-title h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;letter-spacing:.01em;text-transform:uppercase}
+.sec-title .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--grid)}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 28px}
+.card p{color:var(--ink-soft)}
+.card p+p{margin-top:12px}
+.card p b{color:var(--ink)}
+
+/* Stationen-Chips (Zu mir) */
+.stations{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.station{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12px;background:#FAFBFC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.station b{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:12.5px;color:var(--ink)}
+.station span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--grid)}
+
+/* Zwei-Spalten-Skill-Karten */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.skill-list{list-style:none;margin-top:16px}
+.skill-list li{padding:9px 0;border-top:1px solid var(--line);display:flex;gap:10px;font-size:14px;color:var(--ink-soft)}
+.skill-list li::before{content:"—";color:var(--red);font-weight:600;flex-shrink:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:5px 11px;border-radius:99px;background:var(--canvas);border:1px solid var(--line);color:var(--ink-soft)}
+.chip.hot{background:var(--red-soft);border-color:transparent;color:var(--red)}
+
+/* ── CV-Timeline ──────────────────────────────────── */
+.timeline{position:relative;margin-top:6px}
+.timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tl-item{position:relative;padding:0 0 26px 34px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:0;top:5px;width:16px;height:16px;border-radius:50%;background:var(--card);border:4px solid var(--navy)}
+.tl-item.now::before{border-color:var(--red)}
+.tl-date{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--grid)}
+.tl-role{font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;margin-top:3px}
+.tl-org{font-size:13.5px;color:var(--red);margin-top:1px}
+.tl-desc{font-size:13.5px;color:var(--ink-soft);margin-top:6px;max-width:64ch}
+.tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.tl-col-title{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grid);margin-bottom:18px}
+
+/* ── Portfolio ────────────────────────────────────── */
+.folio{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.viz{display:block;text-decoration:none;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}
+.viz:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(20,24,29,.12)}
+.viz-thumb{height:150px;position:relative;display:flex;align-items:flex-end;padding:16px}
+.viz-thumb.superstore{background:linear-gradient(135deg,#3C4658 0%,#1E2530 100%)}
+.viz-thumb.warming{background:linear-gradient(135deg,#C8102E 0%,#7A0A1C 100%)}
+.viz-thumb svg{position:absolute;inset:auto 16px 14px auto;right:16px}
+.viz-kind{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.75);background:rgba(255,255,255,.14);padding:4px 9px;border-radius:99px;backdrop-filter:blur(2px)}
+.viz-body{padding:18px 20px 20px}
+.viz-body h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:17px}
+.viz-body p{font-size:13.5px;color:var(--ink-soft);margin-top:6px}
+.viz-cta{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--red);font-weight:500}
+.viz-cta::after{content:"↗"}
+.folio-note{margin-top:14px;font-size:13px;color:var(--grid);font-family:'IBM Plex Mono',monospace}
+.folio-note a{color:var(--red);text-decoration:none}
+.folio-note a:hover{text-decoration:underline}
+
+/* ── Footer / Kontakt ─────────────────────────────── */
+.foot{margin-top:56px;background:var(--ink);border-radius:var(--radius);color:#fff;padding:30px 32px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.foot .cta{font-family:'Archivo',sans-serif;font-weight:700;font-size:19px}
+.foot .sub{font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.55);margin-top:5px}
+.foot .links{display:flex;gap:10px;flex-wrap:wrap}
+.foot .links a{font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:7px 14px;text-decoration:none;color:#fff;transition:background .15s,color .15s}
+.foot .links a:hover{background:#fff;color:var(--ink)}
+
+@media(max-width:860px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .stations{grid-template-columns:1fr 1fr}
+  .duo,.folio,.tl-grid{grid-template-columns:1fr}
+  .dash-head{padding:22px}
+  .card{padding:20px}
+}
+@media(max-width:460px){.kpis{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="crumb"><b>Bewerbung</b><span class="sep">/</span>SC Freiburg<span class="sep">/</span>Datenanalyst (m/w/d)<span class="sep">/</span><b>KANDIDAT: DENIS HILLE</b></div>
+    <div class="live"><span class="dot"></span>verfügbar</div>
+  </div>
+</div>
+
+<nav class="tabs" aria-label="Dashboard-Navigation">
+  <div class="tabs-inner">
+    <a class="tab active" href="#zu-mir">Zu mir</a>
+    <a class="tab" href="#erfahrungen">Erfahrungen</a>
+    <a class="tab" href="#lebenslauf">Lebenslauf</a>
+    <a class="tab" href="#portfolio">Portfolio</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <header class="dash-head">
+    <div>
+      <h1>DENIS HILLE</h1>
+      <div class="sub">Senior Data Consultant · Daten × Fußball</div>
+      <div class="meta">Köln · remote-erprobt · Deutsch (Muttersprache) · Englisch (verhandlungssicher) · Französisch (solide)</div>
+    </div>
+  </header>
+
+  <!-- KPI-Band -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Jahre Daten-Beratung</div>
+      <div class="value">4+</div>
+      <span class="delta">seit 2021 · taod</span>
+    </div>
+    <div class="kpi">
+      <div class="label">Stationen im Fußball</div>
+      <div class="value">3</div>
+      <span class="delta">TSG · Werder · DFL-Daten</span>
+    </div>
+    <div class="kpi">
+      <div class="label">Zertifizierungen</div>
+      <div class="value">2</div>
+      <span class="delta">Tableau · SnowPro Core</span>
+    </div>
+    <div class="kpi">
+      <div class="label">Studienabschlüsse Sport</div>
+      <div class="value">2</div>
+      <span class="delta neutral">M.Sc. 1,7 · B.Sc.</span>
+    </div>
+  </div>
+
+  <!-- 1 · Zu mir -->
+  <section id="zu-mir">
+    <div class="sec-title"><h2>Zu mir</h2><span class="tag">// warum daten × fußball</span></div>
+    <div class="card">
+      <p>Daten und Fußball sind die zwei Dinge, um die sich mein Berufs- und Privatleben drehen — und ich komme ursprünglich von der Sportseite: <b>B.Sc. Sportwissenschaft</b>, <b>M.Sc. Internationales Sportmanagement</b> (JGU Mainz, Note 1,7). Erst danach bin ich in die Datenberatung gewechselt.</p>
+      <p>Den Fußball kenne ich dabei nicht nur aus der Kurve: Ich habe im <b>Leistungszentrum der TSG Hoffenheim</b> das Team-Management im Nachwuchsbereich (U17/U19) verantwortet und zuvor ein Praktikum im <b>CSR-Management von Werder Bremen</b> absolviert. In der Beratung hatte ich Kunden aus der Bundesliga und habe dort bereits <b>mit DFL-Daten gearbeitet</b>. Ich weiß also aus erster Hand, wie ein Verein tickt, wie unterschiedlich Scouting, Athletik, Medizin und Trainerteam denken, und dass Daten nur dann etwas wert sind, wenn sie im richtigen Moment die richtige Frage beantworten.</p>
+      <div class="stations">
+        <div class="station"><b>TSG Hoffenheim</b><span>Leistungszentrum · Team-Mgmt U17/U19</span></div>
+        <div class="station"><b>Werder Bremen</b><span>Praktikum CSR</span></div>
+        <div class="station"><b>Bundesliga-Kunden</b><span>Beratung · DFL-Daten</span></div>
+        <div class="station"><b>Sport-Studium</b><span>B.Sc. + M.Sc.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2+3 · Skills -->
+  <section id="erfahrungen">
+    <div class="sec-title"><h2>Erfahrungen</h2><span class="tag">// stellenprofil-abgleich</span></div>
+    <div class="duo">
+      <div class="card">
+        <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:17px">Datenmanagement &amp; Integration</h3>
+        <ul class="skill-list">
+          <li>Interne und externe Quellen anbinden und sauber halten — Kern meines Beratungsalltags</li>
+          <li>Große, unübersichtliche Datenbestände in brauchbare Strukturen bringen — Tagesgeschäft</li>
+          <li>Zertifiziert mit Snowflake (SnowPro Core), täglich SQL auf Snowflake und Redshift</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:17px">Analyse &amp; Reporting</h3>
+        <ul class="skill-list">
+          <li>Reports, Dashboards und KPI-Systeme — von der Konzeption bis zum Rollout</li>
+          <li>Zertifizierter Tableau Desktop Specialist, täglich Tableau Desktop / Cloud / Prep</li>
+          <li>HTML-Dashboarding — das neue Ding!</li>
+          <li>Erfahrung mit Statistik — Masterarbeit bei der TSG Hoffenheim im Feld Sportpsychologie</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Lebenslauf -->
+  <section id="lebenslauf">
+    <div class="sec-title"><h2>Lebenslauf</h2><span class="tag">// zeitreihe, aufsteigend</span></div>
+    <div class="card">
+      <div class="tl-grid">
+        <div>
+          <div class="tl-col-title">Berufserfahrung</div>
+          <div class="timeline">
+            <div class="tl-item now">
+              <div class="tl-date">Jan. 2025 – heute</div>
+              <div class="tl-role">Senior Data Consultant</div>
+              <div class="tl-org">taod Consulting GmbH, Köln</div>
+              <div class="tl-desc">Konzeption und Umsetzung von Dashboards, KPI-Systemen und Reportings · Datenmodellierung, Schnittstellen und Datenflüsse · Schwerpunkte Tableau und Projektmanagement</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">Sept. 2021 – Jan. 2025</div>
+              <div class="tl-role">Data Consultant</div>
+              <div class="tl-org">taod Consulting GmbH, Köln</div>
+              <div class="tl-desc">Datenanalyse und Datenmodellierung, Aufbau von Reporting-Lösungen · u. a. für Kunden aus der Bundesliga (DFL-Daten)</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">Sept. 2020 – Dez. 2020</div>
+              <div class="tl-role">Team Management U17/U19</div>
+              <div class="tl-org">TSG Hoffenheim Fußball-Spielbetriebs GmbH</div>
+              <div class="tl-desc">Leistungszentrum · Organisation und Betreuung im Nachwuchsbereich</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">davor</div>
+              <div class="tl-role">Praktikum CSR-Management</div>
+              <div class="tl-org">SV Werder Bremen</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="tl-col-title">Ausbildung</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-date">Apr. 2019 – Okt. 2021</div>
+              <div class="tl-role">M.Sc. Internationales Sportmanagement</div>
+              <div class="tl-org">JGU Mainz · Note 1,7</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">2014 – 2018</div>
+              <div class="tl-role">B.Sc. Sportwissenschaft / Anglistik</div>
+              <div class="tl-org">Universität Koblenz-Landau · Note 2,3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Portfolio -->
+  <section id="portfolio">
+    <div class="sec-title"><h2>Portfolio</h2><span class="tag">// live auf tableau public</span></div>
+    <div class="folio">
+      <a class="viz" href="https://public.tableau.com/app/profile/the.art.of.data/viz/SuperstoreAnalytics_17599108310530/SuperstoreAnalytics" target="_blank" rel="noopener">
+        <div class="viz-thumb superstore">
+          <span class="viz-kind">Business Intelligence</span>
+          <svg width="120" height="60" viewBox="0 0 120 60" aria-hidden="true">
+            <rect x="0" y="34" width="14" height="26" rx="2" fill="rgba(255,255,255,.35)"/>
+            <rect x="20" y="22" width="14" height="38" rx="2" fill="rgba(255,255,255,.5)"/>
+            <rect x="40" y="28" width="14" height="32" rx="2" fill="rgba(255,255,255,.4)"/>
+            <rect x="60" y="12" width="14" height="48" rx="2" fill="rgba(255,255,255,.65)"/>
+            <rect x="80" y="18" width="14" height="42" rx="2" fill="rgba(255,255,255,.5)"/>
+            <rect x="100" y="4" width="14" height="56" rx="2" fill="#C8102E"/>
+          </svg>
+        </div>
+        <div class="viz-body">
+          <h3>Superstore Analytics</h3>
+          <p>BI-Dashboard mit KPI-Kacheln, Zeitreihen und Drilldowns — der Stil, in dem auch diese Seite gebaut ist.</p>
+          <span class="viz-cta">Report öffnen</span>
+        </div>
+      </a>
+      <a class="viz" href="https://public.tableau.com/app/profile/the.art.of.data/viz/GlobalWarming_17132835092360/GlobalWarming" target="_blank" rel="noopener">
+        <div class="viz-thumb warming">
+          <span class="viz-kind">Data Storytelling</span>
+          <svg width="86" height="66" viewBox="0 0 86 66" aria-hidden="true">
+            <g transform="translate(43 33)">
+              <polygon points="0,-28 24,-14 24,14 0,28 -24,14 -24,-14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+              <polygon points="0,-18 15,-9 15,9 0,18 -15,9 -15,-9" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+              <polygon points="0,-24 20,-6 12,13 -16,10 -19,-11" fill="rgba(255,255,255,.28)" stroke="#fff" stroke-width="1.5"/>
+            </g>
+          </svg>
+        </div>
+        <div class="viz-body">
+          <h3>Global Warming</h3>
+          <p>Verspieltes Radar-Chart-Projekt — Klimadaten als Story, weniger Corporate, mehr Experiment.</p>
+          <span class="viz-cta">Report öffnen</span>
+        </div>
+      </a>
+    </div>
+    <div class="folio-note">Vollständiges Profil: <a href="https://public.tableau.com/app/profile/the.art.of.data" target="_blank" rel="noopener">public.tableau.com/app/profile/the.art.of.data</a></div>
+  </section>
+
+  <footer class="foot">
+    <div>
+      <div class="cta">Klingt nach einem Match? Lasst uns sprechen.</div>
+      <div class="sub">remote-ready · Termine am Europa-Park-Stadion, Dreisamstadion &amp; in der Fußballschule nehme ich gern mit</div>
+    </div>
+    <div class="links">
+      <a href="mailto:denis.hille@gmx.de">denis.hille@gmx.de</a>
+      <a href="tel:+491703356678">0170 3356678</a>
+      <a href="https://www.linkedin.com/in/denis-hille-22347a149" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+// Aktiven Tab beim Scrollen markieren
+const tabs=[...document.querySelectorAll('.tab')];
+const secs=tabs.map(t=>document.querySelector(t.getAttribute('href')));
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      const i=secs.indexOf(e.target);
+      if(i>-1){tabs.forEach(t=>t.classList.remove('active'));tabs[i].classList.add('active');}
+    }
+  });
+},{rootMargin:'-30% 0px -60% 0px'});
+secs.forEach(s=>s&&obs.observe(s));
+</script>
+</body>
+</html>
