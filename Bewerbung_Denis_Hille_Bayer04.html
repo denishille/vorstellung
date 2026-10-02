@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bewerbung Denis Hille – Bayer 04</title>
+<style>
+  :root{
+    --ink:#16181d; --muted:#5d6370; --line:#e4e6ea; --soft:#f5f6f8;
+    --red:#e32221; --red-soft:#fde8e8; --bg:#d9dce1; --paper:#ffffff;
+  }
+  @page{ size:A4 landscape; margin:0; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--bg); font-family:"Segoe UI",Inter,Helvetica,Arial,sans-serif; color:var(--ink);
+        -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .sheet{ width:297mm; height:210mm; margin:24px auto; background:var(--paper); display:grid;
+          grid-template-columns:47% 53%; box-shadow:0 8px 30px rgba(0,0,0,.18); overflow:hidden; }
+  @media print{ body{background:#fff} .sheet{margin:0; box-shadow:none} }
+  @media screen and (max-width:1150px){ .sheet{ zoom:calc(100vw / 1160px); } }
+
+  /* ---------- Anschreiben ---------- */
+  .letter{ padding:9mm 11mm 8mm 13mm; display:flex; flex-direction:column; border-right:1px solid var(--line); }
+  .accent{ width:34px; height:4px; background:var(--red); border-radius:2px; margin-bottom:3.5mm; }
+  .sender{ font-size:8pt; color:var(--muted); margin-bottom:4mm; line-height:1.45; }
+  .recipient{ font-size:8.3pt; line-height:1.4; margin-bottom:2mm; }
+  .date{ font-size:8.5pt; color:var(--muted); text-align:right; margin-bottom:3mm; }
+  .subject{ font-size:10.5pt; font-weight:700; line-height:1.3; margin-bottom:3.5mm; }
+  .subject span{ color:var(--red); }
+  .body p{ font-size:8.6pt; line-height:1.47; margin-bottom:2.1mm; text-align:left; hyphens:auto; }
+  .sign{ margin-top:3mm; font-size:8.6pt; line-height:1.5; }
+  .sign strong{ display:block; font-size:11pt; margin-top:1mm; }
+
+  /* ---------- Lebenslauf ---------- */
+  .cv{ padding:8mm 11mm 7mm 9mm; background:var(--soft); display:grid; gap:2.4mm;
+       grid-template-rows:auto auto auto auto 1fr; font-size:7.6pt; line-height:1.4; }
+  .head{ display:flex; justify-content:space-between; align-items:flex-end; }
+  .head h1{ font-size:19pt; letter-spacing:-.3px; line-height:1; }
+  .head .role{ font-size:9pt; color:var(--red); font-weight:600; margin-top:1.5mm; }
+  .contact{ text-align:right; color:var(--muted); font-size:7.4pt; line-height:1.5; }
+  .contact a{ color:var(--ink); text-decoration:none; }
+  h2{ font-size:7pt; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); margin-bottom:1.6mm; font-weight:700; }
+  .card{ background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:2mm 2.8mm; }
+
+  .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:2.4mm; }
+  .kpi{ background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:1.6mm 2.6mm; border-top:3px solid var(--red); }
+  .kpi b{ display:block; font-size:13pt; line-height:1.05; }
+  .kpi span{ color:var(--muted); font-size:6.9pt; }
+
+  /* Timeline */
+  .gantt{ position:relative; }
+  .row{ display:grid; grid-template-columns:46mm 1fr; align-items:center; height:4.6mm; }
+  .row .lbl{ font-size:7pt; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .row .lbl small{ color:var(--muted); }
+  .track{ position:relative; height:100%; border-left:1px solid var(--line); }
+  .bar{ position:absolute; top:1mm; height:2.6mm; border-radius:2px; background:#9aa0aa; }
+  .bar.data{ background:var(--ink); } .bar.sen{ background:var(--red); }
+  .axis{ display:grid; grid-template-columns:46mm 1fr; margin-top:.8mm; }
+  .ticks{ display:grid; grid-template-columns:repeat(10,1fr); font-size:6.3pt; color:var(--muted); border-top:1px solid var(--line); padding-top:.6mm; }
+
+  /* Projekte */
+  .projects{ display:grid; grid-template-columns:repeat(3,1fr); gap:2.4mm; }
+  .proj h3{ font-size:8pt; margin-bottom:.3mm; }
+  .proj .sub{ color:var(--red); font-size:6.8pt; font-weight:600; margin-bottom:1.2mm; }
+  .proj ul{ padding-left:3mm; font-size:6.6pt; line-height:1.32; }
+  .proj li{ margin-bottom:.3mm; }
+
+  /* Unterer Block */
+  .bottom{ display:grid; grid-template-columns:1.15fr 1fr; gap:2.4mm; align-content:start; }
+  .tags{ display:flex; flex-wrap:wrap; gap:1.1mm; margin-bottom:1mm; }
+  .tag{ font-size:6.5pt; padding:.3mm 1.6mm; border-radius:10px; background:var(--soft); border:1px solid var(--line); }
+  .tag.hi{ background:var(--red-soft); border-color:#f5bcbc; color:#9e1414; font-weight:600; }
+  .grp{ font-size:6.6pt; color:var(--muted); margin:.4mm 0 .8mm; }
+  .edu div{ margin-bottom:.9mm; } .edu b{ font-size:7.4pt; } .edu span{ color:var(--muted); display:block; }
+  .links a{ display:flex; justify-content:space-between; align-items:center; text-decoration:none; color:var(--ink);
+            border:1px solid var(--line); border-radius:5px; padding:1mm 2.2mm; margin-bottom:1mm; font-size:7.2pt; font-weight:600; }
+  .links a::after{ content:"↗"; color:var(--red); }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ================= ANSCHREIBEN ================= -->
+  <section class="letter">
+    <div class="accent"></div>
+    <div class="sender">Denis Hille · [Straße Nr.] · [PLZ] Köln · [E-Mail] · [Telefon]</div>
+    <div class="recipient">
+      Bayer 04 Leverkusen Fußball GmbH<br>
+      Bismarckstraße 122–124<br>
+      51373 Leverkusen
+    </div>
+    <div class="date">Köln, 02.10.2026</div>
+    <div class="subject">Bewerbung als Controller (m/w/d)<br><span>Schwerpunkt Power BI, Data Analytics &amp; Business Intelligence</span></div>
+
+    <div class="body">
+      <p>Liebes Team von Bayer 04,</p>
+      <p>Fußball und Daten – genau an dieser Schnittstelle möchte ich arbeiten. Nach meinem Sportstudium und Stationen bei Werder Bremen und der TSG Hoffenheim habe ich mich in den letzten fünf Jahren als BI-Berater bei der taod Consulting GmbH darauf spezialisiert, aus verteilten Datenquellen belastbare Reportinglandschaften zu bauen. Dieses Know-how möchte ich jetzt dort einbringen, wo mein Herz schon immer schlägt: im Profifußball.</p>
+      <p>Bei taod betreue ich Kunden wie RheinEnergie und Dexcom von der Anforderungsaufnahme bis zum laufenden Betrieb. Ich habe Management-, Finanz- und Sales-Reportings konzipiert, manuelle CSV-Prozesse automatisiert, Quellsysteme abgeglichen und eine Tableau-Server-Umgebung in die Cloud migriert – inkl. Budget-, Lizenz- und Stakeholder-Verantwortung. Intern baue ich gerade unser Controlling 2.0 neu auf: Migration von Tableau zu Power BI, schlankes Datenmodell mit dbt und sauberem Mart-Layer in Databricks, KPIs für Auslastungs-, Kapazitäts- und Projektplanung sowie die Frage, was ins Dashboard gehört und was eine KI wie Databricks Genie übernehmen kann.</p>
+      <p>Damit bringe ich mit, was ihr sucht: Power BI und Datenmodellierung, Erfahrung mit modernen Datenplattformen und Microsoft Fabric, konkrete KI-Use-Cases und vor allem die Fähigkeit, Zahlen für Management und Fachbereiche verständlich aufzubereiten. Durch meine Zeit im Fußball weiß ich, wie ein Club tickt – und da taod bereits in einem Projekt mit Bayer 04 zusammengearbeitet hat, ist mir die Werkself auch beruflich nicht fremd.</p>
+      <p>Wie ich Daten visualisiere, seht ihr in meinem Tableau-Public-Portfolio (rechts verlinkt). Ich freue mich darauf, euch im persönlichen Gespräch zu zeigen, wie ich das Reporting im Bereich Marketing &amp; Innovation weiterbringen kann.</p>
+    </div>
+
+    <div class="sign">Viele Grüße<strong>Denis Hille</strong></div>
+  </section>
+
+  <!-- ================= LEBENSLAUF ================= -->
+  <section class="cv">
+    <div class="head">
+      <div>
+        <h1>Denis Hille</h1>
+        <div class="role">Senior Data Consultant · Business Intelligence</div>
+      </div>
+      <div class="contact">
+        Köln · [E-Mail] · [Telefon]<br>
+        <a href="https://www.linkedin.com/in/denis-hille-22347a149/">linkedin.com/in/denis-hille-22347a149</a>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><b>5+ Jahre</b><span>BI-Beratung bei taod</span></div>
+      <div class="kpi"><b>3</b><span>Reportinglandschaften aktuell verantwortet</span></div>
+      <div class="kpi"><b>2</b><span>Profi-Fußballclubs als Station</span></div>
+      <div class="kpi"><b>2</b><span>Zertifizierungen (Tableau, Snowflake)</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Werdegang</h2>
+      <div class="gantt">
+        <!-- ponytail: Achse 2017–2027, 10 % pro Jahr -->
+        <div class="row"><div class="lbl"><b>Senior Data Consultant</b> <small>taod · seit 01/25</small></div>
+          <div class="track"><div class="bar sen" style="left:80%;width:17.5%"></div></div></div>
+        <div class="row"><div class="lbl"><b>Data Consultant</b> <small>taod · 09/21–01/25</small></div>
+          <div class="track"><div class="bar data" style="left:46.7%;width:33.3%"></div></div></div>
+        <div class="row"><div class="lbl"><b>Team Mgmt. U17/U19</b> <small>TSG Hoffenheim</small></div>
+          <div class="track"><div class="bar" style="left:36.7%;width:3.3%"></div></div></div>
+        <div class="row"><div class="lbl"><b>CSR Management</b> <small>Werder Bremen</small></div>
+          <div class="track"><div class="bar" style="left:7.5%;width:5%"></div></div></div>
+        <div class="axis"><div></div><div class="ticks"><span>2017</span><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026</span></div></div>
+      </div>
+    </div>
+
+    <div>
+      <h2>Ausgewählte Projekte</h2>
+      <div class="projects">
+        <div class="card proj">
+          <h3>RheinEnergie</h3><div class="sub">Tableau Cloud &amp; BI · Projektleitung</div>
+          <ul>
+            <li>Zentraler Ansprechpartner für den Tableau-Cloud-SLA: Budget, Tickets, Lizenzen, Stakeholder</li>
+            <li>Migration Tableau Server → Cloud inkl. Berechtigungs- und Inhaltsstruktur</li>
+            <li>Management-, Finanz- und Unfallkennzahlen-Dashboards, Performance-Tuning, PDF-Export</li>
+            <li>Cloud-Monitoring via REST API, Beratung zu Microsoft Fabric</li>
+          </ul>
+        </div>
+        <div class="card proj">
+          <h3>Dexcom</h3><div class="sub">BI, Reporting &amp; Data Strategy</div>
+          <ul>
+            <li>Sales- und Management-Reportings (Cycle Time, Approval, Finance, SNI)</li>
+            <li>Automatisierte Datenaktualisierung statt manueller CSV-Prozesse</li>
+            <li>Datenqualität &amp; Abgleich mehrerer Sales-Datenquellen</li>
+            <li>Workshops zu Reporting 2.0 &amp; AI, Entwicklung von AI-Use-Cases</li>
+          </ul>
+        </div>
+        <div class="card proj">
+          <h3>taod Controlling 2.0</h3><div class="sub">Power BI · dbt · Databricks</div>
+          <ul>
+            <li>Konsolidierung der internen Controlling-Dashboards</li>
+            <li>Prototypische Migration Tableau → Power BI</li>
+            <li>dbt-Modelle &amp; Mart-Layer in Databricks (Kunden, Deals, Projekte, Planung)</li>
+            <li>KPIs für Auslastungs-, Kapazitäts- und Projektplanung; Genie vs. Dashboard</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="card">
+        <h2>Skills</h2>
+        <div class="grp">BI &amp; Visualisierung</div>
+        <div class="tags"><span class="tag hi">Power BI</span><span class="tag hi">Tableau</span><span class="tag">Dashboard Design</span><span class="tag">KPI-Systeme</span><span class="tag">Figma</span></div>
+        <div class="grp">Daten &amp; Plattformen</div>
+        <div class="tags"><span class="tag hi">SQL</span><span class="tag">Datenmodellierung</span><span class="tag">dbt</span><span class="tag">Databricks</span><span class="tag">Snowflake</span><span class="tag">Redshift</span><span class="tag">Microsoft Fabric</span><span class="tag">Python</span><span class="tag">Git</span></div>
+        <div class="grp">Beratung</div>
+        <div class="tags"><span class="tag">Projektleitung</span><span class="tag">Anforderungsaufnahme</span><span class="tag">Workshops</span><span class="tag">AI-Use-Cases</span></div>
+      </div>
+      <div style="display:grid;gap:2.4mm">
+        <div class="card edu">
+          <h2>Ausbildung &amp; Zertifikate</h2>
+          <div><b>Sportwissenschaft</b><span>Johannes Gutenberg-Universität Mainz · [Abschluss, Jahr]</span></div>
+          <div><b>Internationales Sportmanagement</b><span>[Hochschule, Abschluss, Jahr]</span></div>
+          <div><b>Tableau Desktop Specialist</b> · <b>SnowPro Core</b><span>2022 · 2023</span></div>
+        </div>
+        <div class="card links">
+          <h2>Portfolio · Tableau Public</h2>
+          <a href="https://public.tableau.com/app/profile/the.art.of.data/viz/SuperstoreAnalytics_17599108310530/SuperstoreAnalytics">Superstore Analytics</a>
+          <a href="https://public.tableau.com/app/profile/the.art.of.data/viz/GlobalWarming_17132835092360/GlobalWarming">Global Warming</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>
